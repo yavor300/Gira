@@ -1,6 +1,7 @@
 package app.gira.domain.entities;
 
 import app.gira.domain.entities.enums.ClassificationNameEnum;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,6 +13,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class Classification extends BaseEntity {
     @Column(unique = true, nullable = false, name = "name")
     @Enumerated(EnumType.STRING)

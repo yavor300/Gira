@@ -25,4 +25,12 @@ public class UserServiceImpl implements UserService {
                 modelMapper.map(userServiceModel, User.class)
         ), UserServiceModel.class);
     }
+
+    @Override
+    public UserServiceModel findByEmailAndPassword(String email, String password) {
+        return userRepository
+                .findByEmailAndPassword(email, password)
+                .map(user -> modelMapper.map(user, UserServiceModel.class))
+                .orElse(null);
+    }
 }

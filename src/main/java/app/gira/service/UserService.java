@@ -7,4 +7,6 @@ public interface UserService {
     UserServiceModel register(UserServiceModel userServiceModel);
 
     UserServiceModel findByEmailAndPassword(String email, String password);
+
+    UserServiceModel findById(String id);
 }

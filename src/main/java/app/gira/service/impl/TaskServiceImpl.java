@@ -15,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class TaskServiceImpl implements TaskService {
@@ -51,5 +53,28 @@ public class TaskServiceImpl implements TaskService {
         task.setProgress(ProgressEnum.OPEN);
 
         return modelMapper.map(taskRepository.saveAndFlush(task), TaskServiceModel.class);
+    }
+
+    @Override
+    public List<TaskServiceModel> findAll() {
+        return taskRepository.findAll()
+                .stream().map(task -> modelMapper.map(task, TaskServiceModel.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void progress(String id) {
+        Task task = taskRepository.findById(id).orElseThrow();
+
+        ProgressEnum progress = task.getProgress();
+        int ordinal = ProgressEnum.valueOf(progress.name()).ordinal();
+
+        if (ordinal == ProgressEnum.values().length - 1) {
+            taskRepository.deleteById(id);
+        } else {
+            ProgressEnum progressEnum = ProgressEnum.values()[ordinal + 1];
+            task.setProgress(progressEnum);
+            taskRepository.save(task);
+        }
     }
 }
